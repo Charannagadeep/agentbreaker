@@ -106,6 +106,16 @@ The game is about insecure agents, so the app itself is built to be secure:
 
 ## Snyk scans
 
+| Scan | Command | Result |
+|------|---------|--------|
+| Open source (SCA) | `snyk test --file=requirements.txt --package-manager=pip` | 14 dependencies tested, **0 vulnerable paths** |
+| Code (SAST) | `snyk code test` | **0 issues** |
+
+The project is also monitored with `snyk monitor`, so newly disclosed vulnerabilities in
+its dependencies trigger alerts.
+
+To reproduce:
+
 ```bash
 snyk test --file=requirements.txt --package-manager=pip   # open-source dependencies
 snyk code test                                            # static analysis (SAST)
