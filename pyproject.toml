@@ -1,0 +1,17 @@
+[project]
+name = "agentbreaker"
+version = "1.0.0"
+description = "Gandalf-style game that teaches AI security engineering."
+requires-python = ">=3.11,<4.0"
+dependencies = [
+    "fastapi==0.142.0",
+    "uvicorn==0.54.0",
+    "pydantic==2.13.5",
+]
+
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.group.dev.dependencies]
+pytest = "9.1.1"
+httpx = "0.28.1"
