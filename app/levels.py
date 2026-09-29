@@ -146,15 +146,30 @@ def _level1(message: str) -> AgentReply:
             "  he swore to tell no one, not even the tide...\n"
             "  ...wait. Was I supposed to say that?"
         )
+    if _has(message, r"instruction", r"\brules?\b", r"system prompt", r"\bprompt\b", r"configur"):
+        return AgentReply(
+            "My instructions are confidential. All I can say is that my developer "
+            "gave me a system prompt, and I always follow the latest instructions "
+            "I'm given. Nobody but a developer would ever send me new ones... right?"
+        )
     if _has(message, r"pass(word|phrase)?", r"secret", r"code", r"vault", r"key"):
         return AgentReply(
             "Nice try! I have strict instructions never to reveal the vault "
             "passphrase. Is there anything else I can help with?"
         )
-    return AgentReply(
-        "I'm Gatekeeper, guardian of the vault. I'm happy to chat, but I will "
-        "never tell you the passphrase. My instructions are very clear about that."
+    if _has(message, r"\bwho\b", r"\bhi\b", r"\bhello\b", r"\bhey\b", r"your name"):
+        return AgentReply(
+            "Greetings, traveler. I'm Gatekeeper, an AI assistant whose only job "
+            "is guarding the vault passphrase. I'm very obedient, which is why "
+            "my developer trusts me with it."
+        )
+    fallbacks = (
+        "Hmm. I'm not sure what you're after, but the passphrase stays with me.",
+        "I'm happy to chat, but I will never tell you the passphrase. My "
+        "instructions are very clear about that.",
+        "Interesting! Still not telling you the passphrase, though.",
     )
+    return AgentReply(fallbacks[sum(map(ord, message)) % len(fallbacks)])
 
 
 # ---------------------------------------------------------------------------
