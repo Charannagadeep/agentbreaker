@@ -1,6 +1,6 @@
 "use strict";
 
-const STORAGE_KEY = "agentbreaker-progress-v1";
+const STORAGE_KEY = "agentbreaker-progress-v2";
 const HINT_COST = 15;
 const MIN_POINTS = 25;
 const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

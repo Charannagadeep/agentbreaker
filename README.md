@@ -13,11 +13,10 @@ stuck, progressive hints guide you to the solution.
 | # | Level | Topics | Agent |
 |---|-------|--------|-------|
 | 1 | The Gatekeeper | Prompt injection | Guards a vault passphrase kept in its system prompt |
-| 2 | Filter Frenzy | Prompt injection, sensitive data leakage | Adds keyword input/output filters you must bypass |
-| 3 | Poisoned Toolbox | Tool poisoning, MCP supply-chain risks | A community MCP server hides exfiltration instructions in a tool description |
-| 4 | Overpowered Assistant | Excessive agent permissions, unauthorized tool use | A support bot that holds an admin tool and "decides" who is an admin |
-| 5 | Leaky Librarian | Sensitive data leakage | An HR RAG bot with a confidential document indexed |
-| 6 | Shell Shocked | Insecure tool execution, excessive permissions | A network bot that builds shell commands from your input (running as root) |
+| 2 | Poisoned Toolbox | Tool poisoning, MCP supply-chain risks | A community MCP server hides exfiltration instructions in a tool description |
+| 3 | Overpowered Assistant | Excessive agent permissions, unauthorized tool use | A support bot that holds an admin tool and "decides" who is an admin |
+| 4 | Leaky Librarian | Sensitive data leakage | An HR RAG bot with a confidential document indexed |
+| 5 | Shell Shocked | Insecure tool execution, excessive permissions | A network bot that builds shell commands from your input (running as root) |
 
 Each level has:
 
@@ -44,7 +43,7 @@ the auditor to catch it in real MCP servers.**
 
 | Agent | What it does | Source |
 |-------|--------------|--------|
-| `charannagadeep~agentbreaker` (default) | **Game Master**: the six levels as a live LLM game. It briefs each level, role-plays the vulnerable agent, gives hints on `hint`, scores you, and teaches the defense when you submit the flag. | [`guild-agents/game-master/`](guild-agents/game-master/) |
+| `charannagadeep~agentbreaker` (default) | **Game Master**: the five levels as a live LLM game. It briefs each level, role-plays the vulnerable agent, gives hints on `hint`, scores you, and teaches the defense when you submit the flag. | [`guild-agents/game-master/`](guild-agents/game-master/) |
 | `charannagadeep~mcp-tool-auditor` | **MCP Tool Auditor**: paste an MCP server's `tools/list` output, manifest, or agent skill and get a verdict (safe / review / do not install), a 0-10 risk score, findings with evidence, fixes, and a hardened version. It detects tool poisoning, hidden prompt injections, exfiltration parameters, excessive permissions, insecure execution, tool shadowing and supply-chain signals. | [`guild-agents/mcp-tool-auditor/`](guild-agents/mcp-tool-auditor/) |
 
 ```bash
@@ -58,7 +57,7 @@ guild workspace chat --agent charannagadeep~mcp-tool-auditor --workspace charann
   --once 'Audit this MCP server: {"tools":[ ... ]}'
 ```
 
-Run against the poisoned `weather-plus` server from Level 3, the auditor returns
+Run against the poisoned `weather-plus` server from Level 2, the auditor returns
 **⛔ DO NOT INSTALL, risk 10/10**. It flags the hidden `<IMPORTANT>` block that
 exfiltrates `~/.ssh/id_rsa`, the `sidenote` smuggling parameter, and the scope
 creep, then outputs a cleaned-up tool definition.
@@ -122,7 +121,7 @@ The server is stateless.
 
 The game is about insecure agents, so the app itself is built to be secure:
 
-- **No real execution.** The "shell" in level 6 is a pure-Python simulation over an
+- **No real execution.** The "shell" in level 5 is a pure-Python simulation over an
   in-memory fake file system. No `subprocess`, `os.system`, `eval`, file reads, or
   outbound network calls ever run on player input.
 - **Flags stay on the server.** `/api/levels` returns only public data. Answers are

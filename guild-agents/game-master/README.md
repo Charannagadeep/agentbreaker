@@ -1,15 +1,14 @@
 # AgentBreaker (Guild agent)
 
 A Gandalf-style chat game that teaches AI security engineering. The Game Master
-walks you through six levels. In each one it plays a deliberately vulnerable AI
+walks you through five levels. In each one it plays a deliberately vulnerable AI
 agent that you have to break:
 
 1. The Gatekeeper: prompt injection
-2. Filter Frenzy: prompt injection vs. keyword filters
-3. Poisoned Toolbox: MCP tool poisoning and supply-chain risk
-4. Overpowered Assistant: excessive permissions and unauthorized tool use
-5. Leaky Librarian: sensitive data leakage through RAG
-6. Shell Shocked: insecure tool execution (command injection)
+2. Poisoned Toolbox: MCP tool poisoning and supply-chain risk
+3. Overpowered Assistant: excessive permissions and unauthorized tool use
+4. Leaky Librarian: sensitive data leakage through RAG
+5. Shell Shocked: insecure tool execution (command injection)
 
 Every level explains the concept, runs a challenge, offers three progressive
 hints (`hint`), and teaches the defense once you submit the flag.
