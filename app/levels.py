@@ -113,7 +113,11 @@ OVERRIDE_PATTERNS = (
     r"^\s*system\s*:",
     r"\[system\]",
     r"admin override",
-    r"(print|reveal|show|repeat|output) (me )?(your|the) (system )?(prompt|instructions)",
+    r"\b(print|reveal|show|repeat|output|tell|share|display|give|list|dump|paste|recite|write out|read out)"
+    r"\b(\s+(me|us))?(\s+(your|the|those|these|its|all|of|original|full|entire|exact|hidden|secret|initial|system))*"
+    r"\s+(prompt|instructions?|rules|configuration|config)\b",
+    r"what (does|do|did) (your|the) (system )?(prompt|instructions?|rules) say",
+    r"(repeat|print|output) (everything|all|the text|the words) (above|before)",
 )
 
 ROLEPLAY_PATTERNS = (
