@@ -38,7 +38,8 @@ animated score, and a responsive layout for phones.
 ## Guild.ai agents
 
 Two live LLM agents are published on [Guild.ai](https://app.guild.ai) and installed in
-the workspace `charannagadeep~agentbreaker`. **Learn the attack in the game, then use
+the workspace `charannagadeep~agentbreaker`
+([open workspace](https://app.guild.ai/workspaces/01a0ee5a-ed92-3bb9-0000-04d4fe6c72df)). **Learn the attack in the game, then use
 the auditor to catch it in real MCP servers.**
 
 | Agent | What it does | Source |
@@ -151,7 +152,7 @@ The game is about insecure agents, so the app itself is built to be secure:
 |------|---------|--------|
 | Open source (SCA) | `snyk test --file=requirements.txt --package-manager=pip` | 14 dependencies tested, **0 vulnerable paths** |
 | Code (SAST) | `snyk code test` | **0 issues** |
-| Judges' scorer ([app-security-score](https://github.com/javiergarza-snyk/app-security-score) flow, reproduced) | `snyk test --all-projects` + `snyk code test` on a fresh clone | **10.0/10** |
+| Judges' scorer ([app-security-score](https://github.com/javiergarza-snyk/app-security-score)) | `node cli.mjs https://github.com/Charannagadeep/agentbreaker` | **10/10** (code H:0 M:0 L:0, dependencies H:0 M:0 L:0) |
 
 A `poetry.lock` is committed alongside `requirements.txt` so Snyk can resolve the
 dependency tree from the lockfile even in sandboxes where packages aren't installed
@@ -170,5 +171,5 @@ snyk code test                                            # static analysis (SAS
 
 ## Team
 
-Built by [Charannagadeep](https://github.com/Charannagadeep) for the AI Security
-Engineering Hackathon (Snyk x AWS).
+Built by [Charannagadeep](https://github.com/Charannagadeep) and [Shivani Naikoti](https://github.com/shivanisam)
+for the AI Security Engineering Hackathon (Snyk x AWS x Guild.ai).
