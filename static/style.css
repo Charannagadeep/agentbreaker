@@ -231,6 +231,17 @@ input[type="text"]:focus { outline: none; border-color: rgba(var(--accent-rgb), 
 .how-step h4 { margin-top: 0.6rem; }
 .how-step p { color: var(--muted); font-size: 0.88rem; line-height: 1.5; margin-top: 0.35rem; }
 .home-foot { text-align: center; margin-top: 3rem; font-size: 0.82rem; }
+.guild-strip {
+  display: grid; grid-template-columns: 1.1fr 1fr; gap: 1.5rem; align-items: center;
+  margin-top: 3.5rem; padding: 1.6rem; border-radius: 20px;
+  background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.16), rgba(34, 211, 238, 0.08));
+  border: 1px solid rgba(var(--accent-rgb), 0.35); backdrop-filter: blur(14px);
+}
+.guild-strip h3 { font-size: 1.4rem; margin-top: 0.8rem; }
+.guild-strip p { margin-top: 0.5rem; line-height: 1.55; font-size: 0.93rem; }
+.guild-strip strong { color: var(--text); }
+.guild-cmd { margin: 0; padding: 1rem; border-radius: 12px; background: rgba(5, 7, 12, 0.8); border: 1px solid var(--border-strong); font-size: 0.8rem; line-height: 1.55; color: #c9f7dd; white-space: pre-wrap; }
+@media (max-width: 900px) { .guild-strip { grid-template-columns: 1fr; } }
 
 /* ---------- GAME ---------- */
 .game { height: 100vh; display: flex; flex-direction: column; animation: fade-in 0.4s ease both; }

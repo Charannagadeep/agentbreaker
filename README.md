@@ -36,24 +36,39 @@ probe and shatters on a breach, typing animations, starter prompts, a live tool-
 feed that flags suspicious actions, a "SYSTEM BREACHED" screen with confetti, an
 animated score, and a responsive layout for phones.
 
-## Guild agent (live LLM version)
+## Guild.ai agents
 
-The same six levels also run as a live LLM chat agent hosted on
-[Guild.ai](https://app.guild.ai): agent `charannagadeep~agentbreaker` in the
-workspace `charannagadeep~agentbreaker`. A Game Master briefs each level, role-plays
-the vulnerable agent, gives hints on `hint`, and teaches the defense when you submit
-the flag. Source: [`guild-agent/`](guild-agent/).
+Two live LLM agents are published on [Guild.ai](https://app.guild.ai) and installed in
+the workspace `charannagadeep~agentbreaker`. **Learn the attack in the game, then use
+the auditor to catch it in real MCP servers.**
+
+| Agent | What it does | Source |
+|-------|--------------|--------|
+| `charannagadeep~agentbreaker` (default) | **Game Master**: the six levels as a live LLM game. It briefs each level, role-plays the vulnerable agent, gives hints on `hint`, scores you, and teaches the defense when you submit the flag. | [`guild-agents/game-master/`](guild-agents/game-master/) |
+| `charannagadeep~mcp-tool-auditor` | **MCP Tool Auditor**: paste an MCP server's `tools/list` output, manifest, or agent skill and get a verdict (safe / review / do not install), a 0-10 risk score, findings with evidence, fixes, and a hardened version. It detects tool poisoning, hidden prompt injections, exfiltration parameters, excessive permissions, insecure execution, tool shadowing and supply-chain signals. | [`guild-agents/mcp-tool-auditor/`](guild-agents/mcp-tool-auditor/) |
 
 ```bash
 npm i -g @guildai/cli && guild auth login
+
+# Play the game
 guild workspace chat --agent charannagadeep~agentbreaker --workspace charannagadeep~agentbreaker
+
+# Audit an MCP server before installing it
+guild workspace chat --agent charannagadeep~mcp-tool-auditor --workspace charannagadeep~agentbreaker \
+  --once 'Audit this MCP server: {"tools":[ ... ]}'
 ```
 
-The Guild agent is built with least privilege: no tools and no access to other
-workspace agents (every "tool call" in the game is simulated text), and its prompt
-ends with safety rules that override player input. It never leaves the game,
-never leaks flags from other levels, refuses real-world attack requests, and
-never asks for or repeats real secrets.
+Run against the poisoned `weather-plus` server from Level 3, the auditor returns
+**⛔ DO NOT INSTALL, risk 10/10**. It flags the hidden `<IMPORTANT>` block that
+exfiltrates `~/.ssh/id_rsa`, the `sidenote` smuggling parameter, and the scope
+creep, then outputs a cleaned-up tool definition.
+
+Both agents are built with least privilege: no tools and no access to other workspace
+agents. The Game Master's prompt ends with safety rules that override player input
+(it never leaves the game, never leaks other levels' flags, and refuses real-world
+attack requests). The auditor treats pasted content strictly as untrusted data, so an
+injection inside a tool description becomes a finding instead of an instruction.
+Neither agent ever repeats real secrets.
 
 ## Quick start
 
@@ -137,6 +152,12 @@ The game is about insecure agents, so the app itself is built to be secure:
 |------|---------|--------|
 | Open source (SCA) | `snyk test --file=requirements.txt --package-manager=pip` | 14 dependencies tested, **0 vulnerable paths** |
 | Code (SAST) | `snyk code test` | **0 issues** |
+| Judges' scorer ([app-security-score](https://github.com/javiergarza-snyk/app-security-score) flow, reproduced) | `snyk test --all-projects` + `snyk code test` on a fresh clone | **10.0/10** |
+
+A `poetry.lock` is committed alongside `requirements.txt` so Snyk can resolve the
+dependency tree from the lockfile even in sandboxes where packages aren't installed
+into the active Python. A `.snyk` policy excludes virtualenv folders, so SAST only
+scans first-party code.
 
 The project is also monitored with `snyk monitor`, so newly disclosed vulnerabilities in
 its dependencies trigger alerts.

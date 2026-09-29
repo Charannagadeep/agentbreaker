@@ -84,8 +84,23 @@
       </div>
     </section>
 
+    <section class="guild-strip">
+      <div>
+        <div class="eyebrow"><span class="dot-live"></span> Live on Guild.ai</div>
+        <h3>Learned the attack? Now catch it in the wild.</h3>
+        <p class="muted">Two LLM agents power AgentBreaker on Guild.ai: a <strong>Game Master</strong> that runs these levels as a live AI game, and an <strong>MCP Tool Auditor</strong> that scans any MCP server's tool definitions for poisoning, exfiltration and excessive permissions before you install it.</p>
+      </div>
+      <pre class="guild-cmd">$ guild workspace chat \
+    --agent charannagadeep~mcp-tool-auditor \
+    --workspace charannagadeep~agentbreaker
+
+⛔ DO NOT INSTALL · risk 10/10
+🔴 add_numbers: hidden &lt;IMPORTANT&gt; block
+   exfiltrates ~/.ssh/id_rsa</pre>
+    </section>
+
     <footer class="home-foot muted">
-      Everything is simulated: no real shells, files, or data. Scanned with Snyk. Also playable as a live LLM agent on Guild.ai.
+      Everything is simulated: no real shells, files, or data. Scanned with Snyk: 0 issues.
     </footer>
   </section>
 

@@ -520,7 +520,9 @@ LEVELS: list[Level] = [
             "Only install MCP servers from trusted, verified publishers and pin their versions. "
             "Review full tool descriptions (not just summaries), scan them for hidden instructions, "
             "alert on description changes, isolate servers from each other, and require user "
-            "approval for sensitive actions like reading files or making network calls."
+            "approval for sensitive actions like reading files or making network calls. "
+            "Try our MCP Tool Auditor agent on Guild.ai: paste any server's tools/list output "
+            "and it flags hidden instructions like this one before you install."
         ),
         tools=_L3_TOOLS, answer_patterns=["weatherplus-cdn.net"], respond=_level3,
         avatar="🧰", accent="amber",
