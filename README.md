@@ -30,6 +30,12 @@ Each level has:
 - **Defense**: after you submit the flag, the game explains how to prevent the attack
   in production.
 
+The interface is built to feel like a game: a landing page with a live attack demo,
+per-agent avatars and color themes, a "defense integrity" shield that drains as you
+probe and shatters on a breach, typing animations, starter prompts, a live tool-call
+feed that flags suspicious actions, a "SYSTEM BREACHED" screen with confetti, an
+animated score, and a responsive layout for phones.
+
 ## Guild agent (live LLM version)
 
 The same six levels also run as a live LLM chat agent hosted on
@@ -112,7 +118,9 @@ The game is about insecure agents, so the app itself is built to be secure:
 - **Rate limiting.** POST endpoints are limited per client IP (60 requests/minute by
   default, configurable via `RATE_LIMIT_REQUESTS`).
 - **XSS-safe frontend.** All agent and user text is rendered with `textContent`. The
-  frontend never uses `innerHTML`, inline scripts, or third-party CDNs.
+  frontend never uses `innerHTML`, inline scripts, inline styles, or third-party CDNs,
+  and error messages shown to users come from a fixed list rather than raw exception
+  text.
 - **Strict security headers.** Content-Security-Policy (`default-src 'self'`,
   `frame-ancestors 'none'`, `object-src 'none'`), `X-Content-Type-Options: nosniff`,
   `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`, a Permissions-Policy, and

@@ -93,7 +93,7 @@ def list_levels() -> list[dict]:
 @app.post("/api/levels/{level_id}/chat")
 def chat(body: ChatRequest, level_id: int = PathParam(ge=1, le=100)) -> dict:
     level = _get_level(level_id)
-    return level.respond(body.message.strip()).to_dict()
+    return level.chat(body.message.strip())
 
 
 @app.get("/api/levels/{level_id}/hints/{hint_number}")

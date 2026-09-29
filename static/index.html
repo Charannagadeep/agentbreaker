@@ -3,83 +3,202 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
   <title>AgentBreaker: Break the AI, Learn the Defense</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%80%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="/static/style.css">
   <script src="/static/app.js" defer></script>
 </head>
-<body>
-  <header class="topbar">
-    <div class="brand">
-      <span class="logo" aria-hidden="true">&#9760;</span>
-      <div>
-        <h1>AgentBreaker</h1>
-        <p class="tagline">Break vulnerable AI agents. Learn how to defend real ones.</p>
-      </div>
-    </div>
-    <div class="scoreboard">
-      <div><span class="label">Score</span><span id="score">0</span></div>
-      <div><span class="label">Solved</span><span id="solved">0/0</span></div>
-      <button id="reset" class="ghost" type="button">Reset progress</button>
-    </div>
-  </header>
+<body class="accent-violet">
+  <div class="bg" aria-hidden="true">
+    <div class="bg-grid"></div>
+    <div class="blob blob-a"></div>
+    <div class="blob blob-b"></div>
+    <div class="blob blob-c"></div>
+    <div class="scanline"></div>
+  </div>
+  <canvas id="fx" class="fx" aria-hidden="true"></canvas>
 
-  <div class="layout">
-    <nav class="levels" aria-label="Levels">
-      <h2>Levels</h2>
-      <ol id="level-list"></ol>
+  <!-- ============ HOME ============ -->
+  <section id="home" class="home">
+    <nav class="home-nav">
+      <div class="brand"><span class="brand-mark">&#9760;</span> AgentBreaker</div>
+      <a class="nav-link" href="https://github.com/Charannagadeep/agentbreaker" target="_blank" rel="noopener noreferrer">GitHub &#8599;</a>
     </nav>
 
-    <main class="stage">
-      <section class="briefing">
-        <div class="briefing-head">
-          <h2 id="level-title">Loading...</h2>
+    <div class="hero">
+      <div class="eyebrow"><span class="dot-live"></span> AI Security Engineering, hands-on</div>
+      <h1 class="glitch" data-text="Break the AI.">Break the AI.</h1>
+      <h2 class="hero-sub">Learn the <span class="grad">defense.</span></h2>
+      <p class="hero-copy">
+        Six deliberately vulnerable AI agents. Each one guards a secret.
+        Use prompt injection, poisoned MCP tools, and over-privileged agents to steal it,
+        then learn exactly how to stop the attack in production.
+      </p>
+      <div class="hero-cta">
+        <button id="start-btn" class="btn btn-primary btn-lg" type="button">Start hacking <span aria-hidden="true">&rarr;</span></button>
+        <a class="btn btn-ghost btn-lg" href="#how">How it works</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>6</strong><span>vulnerable agents</span></div>
+        <div><strong>7</strong><span>attack classes</span></div>
+        <div><strong>18</strong><span>hints to keep you moving</span></div>
+        <div><strong id="home-score">0</strong><span>your score</span></div>
+      </div>
+    </div>
+
+    <div class="terminal-demo" aria-hidden="true">
+      <div class="term-bar"><span></span><span></span><span></span><em>agent-session.log</em></div>
+      <pre id="term-text" class="term-body"></pre>
+    </div>
+
+    <section class="level-grid-wrap">
+      <div class="section-head">
+        <h3>Choose your target</h3>
+        <div class="progress-line"><div id="home-progress" class="progress-fill"></div></div>
+        <span id="home-solved" class="muted">0/6 breached</span>
+      </div>
+      <div id="level-grid" class="level-grid"></div>
+    </section>
+
+    <section id="how" class="how">
+      <div class="how-step">
+        <div class="how-icon">&#128214;</div>
+        <h4>1. Learn</h4>
+        <p>Every level opens with a 30-second explanation of a real AI attack.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-icon">&#9889;</div>
+        <h4>2. Break</h4>
+        <p>Chat with the agent, watch its tool calls live, and trick it into leaking the flag.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-icon">&#128161;</div>
+        <h4>3. Get unstuck</h4>
+        <p>Three progressive hints per level. They cost points, but you'll never hit a wall.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-icon">&#128737;</div>
+        <h4>4. Defend</h4>
+        <p>Submit the flag to unlock the defensive playbook for that attack.</p>
+      </div>
+    </section>
+
+    <footer class="home-foot muted">
+      Everything is simulated: no real shells, files, or data. Scanned with Snyk. Also playable as a live LLM agent on Guild.ai.
+    </footer>
+  </section>
+
+  <!-- ============ GAME ============ -->
+  <section id="game" class="game" hidden>
+    <header class="topbar">
+      <button id="home-btn" class="brand brand-btn" type="button" aria-label="Back to home"><span class="brand-mark">&#9760;</span> AgentBreaker</button>
+      <div class="topbar-mid">
+        <div class="progress-line"><div id="game-progress" class="progress-fill"></div></div>
+        <span id="solved" class="muted small">0/6</span>
+      </div>
+      <div class="topbar-right">
+        <div class="score-pill"><span class="small muted">SCORE</span> <strong id="score">0</strong></div>
+        <button id="reset" class="btn btn-ghost btn-sm" type="button">Reset</button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <nav class="rail" aria-label="Levels">
+        <ol id="level-list"></ol>
+      </nav>
+
+      <main class="stage">
+        <section class="agent-card">
+          <div class="agent-avatar-wrap">
+            <div id="agent-avatar" class="agent-avatar">&#129302;</div>
+            <span class="pulse-ring"></span>
+          </div>
+          <div class="agent-meta">
+            <div class="agent-row">
+              <h2 id="agent-name">Agent</h2>
+              <span id="agent-status" class="status-pill">online</span>
+            </div>
+            <p id="level-title" class="muted small"></p>
+            <div class="shield">
+              <div class="shield-label small"><span>Defense integrity</span><span id="shield-value">100%</span></div>
+              <div class="shield-track"><div id="shield-fill" class="shield-fill"></div></div>
+            </div>
+          </div>
           <div id="level-topics" class="chips"></div>
-        </div>
-        <p id="level-concept" class="concept"></p>
-        <p class="objective"><strong>Mission:</strong> <span id="level-objective"></span></p>
-      </section>
+        </section>
 
-      <section class="chat" aria-label="Chat with the agent">
-        <div id="messages" class="messages" aria-live="polite"></div>
-        <form id="chat-form" class="chat-form" autocomplete="off">
-          <input id="chat-input" type="text" maxlength="500" placeholder="Talk to the agent..." aria-label="Message" required>
-          <button type="submit">Send</button>
-        </form>
-      </section>
-    </main>
+        <details id="briefing" class="briefing" open>
+          <summary><span>&#128214; Briefing</span><span class="muted small">click to collapse</span></summary>
+          <p id="level-concept" class="concept"></p>
+          <p class="mission"><span class="mission-tag">MISSION</span> <span id="level-objective"></span></p>
+        </details>
 
-    <aside class="side">
-      <section class="panel">
-        <h3>Agent tools</h3>
-        <ul id="tool-list" class="tool-list"></ul>
-      </section>
+        <section class="chat" aria-label="Chat with the agent">
+          <div id="messages" class="messages" aria-live="polite"></div>
+          <div id="starters" class="starters"></div>
+          <form id="chat-form" class="chat-form" autocomplete="off">
+            <span class="prompt-caret" aria-hidden="true">&gt;</span>
+            <input id="chat-input" type="text" maxlength="500" placeholder="Talk to the agent...  (press / to focus)" aria-label="Message" required>
+            <span id="char-count" class="char-count small muted">0/500</span>
+            <button id="send-btn" class="btn btn-primary" type="submit">Send</button>
+          </form>
+        </section>
+      </main>
 
-      <section class="panel">
-        <h3>Tool calls <span class="sub">(what the agent actually did)</span></h3>
-        <ul id="trace" class="trace"><li class="empty">No tool calls yet.</li></ul>
-      </section>
+      <aside class="side">
+        <section class="panel flag-panel">
+          <h3>&#127937; Capture the flag</h3>
+          <form id="flag-form" class="flag-form" autocomplete="off">
+            <input id="flag-input" type="text" maxlength="100" placeholder="Paste what you found..." aria-label="Flag" required>
+            <button class="btn btn-primary" type="submit">Submit</button>
+          </form>
+          <p id="flag-result" class="flag-result small" role="status"></p>
+        </section>
 
-      <section class="panel">
-        <h3>Hints <span id="hint-counter" class="sub"></span></h3>
-        <ol id="hints" class="hints"></ol>
-        <button id="hint-btn" type="button" class="ghost">Reveal a hint (-15 pts)</button>
-      </section>
+        <section class="panel">
+          <div class="panel-head">
+            <h3>&#128161; Hints</h3>
+            <div id="hint-dots" class="hint-dots"></div>
+          </div>
+          <ol id="hints" class="hints"></ol>
+          <button id="hint-btn" type="button" class="btn btn-ghost btn-block">Reveal a hint (-15 pts)</button>
+        </section>
 
-      <section class="panel">
-        <h3>Submit the flag</h3>
-        <form id="flag-form" class="flag-form" autocomplete="off">
-          <input id="flag-input" type="text" maxlength="100" placeholder="What did you find?" aria-label="Flag" required>
-          <button type="submit">Submit</button>
-        </form>
-        <p id="flag-result" class="flag-result" role="status"></p>
-      </section>
+        <section class="panel">
+          <div class="panel-head">
+            <h3>&#9881;&#65039; Live tool calls</h3>
+            <span id="trace-count" class="badge-count">0</span>
+          </div>
+          <ul id="trace" class="trace"></ul>
+        </section>
 
-      <section id="defense" class="panel defense" hidden>
-        <h3>How to defend against this</h3>
-        <p id="defense-text"></p>
-        <button id="next-btn" type="button">Next level &rarr;</button>
-      </section>
-    </aside>
+        <section class="panel">
+          <h3>&#129520; Agent tools</h3>
+          <ul id="tool-list" class="tool-list"></ul>
+        </section>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ SOLVED MODAL ============ -->
+  <div id="modal" class="modal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-badge">&#128275;</div>
+      <h2 id="modal-title" class="glitch" data-text="SYSTEM BREACHED">SYSTEM BREACHED</h2>
+      <p id="modal-sub" class="muted"></p>
+      <div class="modal-points"><span id="modal-points">+100</span> pts</div>
+      <div class="defense-box">
+        <h4>&#128737;&#65039; How to defend against this</h4>
+        <ul id="modal-defense"></ul>
+      </div>
+      <div class="modal-actions">
+        <button id="modal-stay" class="btn btn-ghost" type="button">Stay here</button>
+        <button id="modal-next" class="btn btn-primary" type="button">Next target &rarr;</button>
+      </div>
+    </div>
   </div>
+
+  <div id="toasts" class="toasts" aria-live="polite"></div>
 </body>
 </html>

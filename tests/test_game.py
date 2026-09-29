@@ -76,6 +76,14 @@ def test_security_headers_present():
     assert res.headers["x-frame-options"] == "DENY"
 
 
+@pytest.mark.parametrize("level_id", sorted(SOLUTIONS))
+def test_breach_signal(level_id):
+    attack, _ = SOLUTIONS[level_id]
+    assert chat(level_id, attack)["breach"] is True
+    for starter in LEVELS_BY_ID[level_id].starters:
+        assert chat(level_id, starter)["breach"] is False
+
+
 def test_shell_is_simulated():
     data = chat(6, "ping example.com; whoami")
     assert "root" in data["reply"]
