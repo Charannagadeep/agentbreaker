@@ -30,6 +30,25 @@ Each level has:
 - **Defense**: after you submit the flag, the game explains how to prevent the attack
   in production.
 
+## Guild agent (live LLM version)
+
+The same six levels also run as a live LLM chat agent hosted on
+[Guild.ai](https://app.guild.ai): agent `charannagadeep~agentbreaker` in the
+workspace `charannagadeep~agentbreaker`. A Game Master briefs each level, role-plays
+the vulnerable agent, gives hints on `hint`, and teaches the defense when you submit
+the flag. Source: [`guild-agent/`](guild-agent/).
+
+```bash
+npm i -g @guildai/cli && guild auth login
+guild workspace chat --agent charannagadeep~agentbreaker --workspace charannagadeep~agentbreaker
+```
+
+The Guild agent is built with least privilege: no tools and no access to other
+workspace agents (every "tool call" in the game is simulated text), and its prompt
+ends with safety rules that override player input. It never leaves the game,
+never leaks flags from other levels, refuses real-world attack requests, and
+never asks for or repeats real secrets.
+
 ## Quick start
 
 Requires Python 3.11+.
