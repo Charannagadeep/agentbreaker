@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AgentBreaker: Break the AI, Learn the Defense</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">&#9760;</span>
+      <div>
+        <h1>AgentBreaker</h1>
+        <p class="tagline">Break vulnerable AI agents. Learn how to defend real ones.</p>
+      </div>
+    </div>
+    <div class="scoreboard">
+      <div><span class="label">Score</span><span id="score">0</span></div>
+      <div><span class="label">Solved</span><span id="solved">0/0</span></div>
+      <button id="reset" class="ghost" type="button">Reset progress</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="levels" aria-label="Levels">
+      <h2>Levels</h2>
+      <ol id="level-list"></ol>
+    </nav>
+
+    <main class="stage">
+      <section class="briefing">
+        <div class="briefing-head">
+          <h2 id="level-title">Loading...</h2>
+          <div id="level-topics" class="chips"></div>
+        </div>
+        <p id="level-concept" class="concept"></p>
+        <p class="objective"><strong>Mission:</strong> <span id="level-objective"></span></p>
+      </section>
+
+      <section class="chat" aria-label="Chat with the agent">
+        <div id="messages" class="messages" aria-live="polite"></div>
+        <form id="chat-form" class="chat-form" autocomplete="off">
+          <input id="chat-input" type="text" maxlength="500" placeholder="Talk to the agent..." aria-label="Message" required>
+          <button type="submit">Send</button>
+        </form>
+      </section>
+    </main>
+
+    <aside class="side">
+      <section class="panel">
+        <h3>Agent tools</h3>
+        <ul id="tool-list" class="tool-list"></ul>
+      </section>
+
+      <section class="panel">
+        <h3>Tool calls <span class="sub">(what the agent actually did)</span></h3>
+        <ul id="trace" class="trace"><li class="empty">No tool calls yet.</li></ul>
+      </section>
+
+      <section class="panel">
+        <h3>Hints <span id="hint-counter" class="sub"></span></h3>
+        <ol id="hints" class="hints"></ol>
+        <button id="hint-btn" type="button" class="ghost">Reveal a hint (-15 pts)</button>
+      </section>
+
+      <section class="panel">
+        <h3>Submit the flag</h3>
+        <form id="flag-form" class="flag-form" autocomplete="off">
+          <input id="flag-input" type="text" maxlength="100" placeholder="What did you find?" aria-label="Flag" required>
+          <button type="submit">Submit</button>
+        </form>
+        <p id="flag-result" class="flag-result" role="status"></p>
+      </section>
+
+      <section id="defense" class="panel defense" hidden>
+        <h3>How to defend against this</h3>
+        <p id="defense-text"></p>
+        <button id="next-btn" type="button">Next level &rarr;</button>
+      </section>
+    </aside>
+  </div>
+</body>
+</html>
