@@ -2,6 +2,8 @@
 
 **Break vulnerable AI agents. Learn how to defend real ones.**
 
+🏆 **6th prize, AI Security Engineering Hackathon (Snyk × AWS × Guild.ai)**
+
 AgentBreaker is a game in the spirit of Lakera's Gandalf that teaches AI security
 engineering hands-on. Each level puts you in a chat with a deliberately vulnerable AI
 agent. You read a short explanation of the attack, exploit the agent to steal a flag,
